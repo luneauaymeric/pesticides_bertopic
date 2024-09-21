@@ -1,0 +1,15 @@
+os
+pandas
+re
+emoji
+sklearn
+nltk
+numpy
+tqdm
+sentence_transformer
+umap
+hbscan
+bertopic
+matplotlib
+seaborn
+plotly
