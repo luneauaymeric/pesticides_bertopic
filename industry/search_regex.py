@@ -46,19 +46,25 @@ def search_regex(dict_queries, dict_text, term_to_search = None):
     """
 # La boucle pour recherche les expressions dans les textes
     dict_compteur = {}
+    dict_match_queries = {}
     j = -1
     if term_to_search is not None:
         for n, x in tqdm(enumerate(term_to_search), total = len(term_to_search)):
             compteur  = 0
             queries = dict_queries[x]
             dict_test_queries = {}
+            list_match = []
             for y in dict_text:
                 text = dict_text[y]
                 compteur2 = 0
+                
                 for i, query in enumerate(queries):
+                   
                     p = re.compile(query, re.IGNORECASE)
                     sq = p.search(text)
                     if sq is not None:
+                        list_match.append(sq.group(0))
+                    
                         compteur2 += 1
                     else:
                         pass
@@ -74,12 +80,14 @@ def search_regex(dict_queries, dict_text, term_to_search = None):
             else:
                 df01[x] = df01.index.map(dict_test_queries)
             print(f"{x} : {compteur}")
-        return df01
+            dict_match_queries[query] = list_match
+        return df01,dict_match_queries
     else:
         for n, x in tqdm(enumerate(dict_queries), total = len(dict_queries)):
             compteur  = 0
             queries = dict_queries[x]
             dict_test_queries = {}
+            list_match = []
             for y in dict_text:
                 text = dict_text[y]
                 compteur2 = 0
@@ -87,6 +95,7 @@ def search_regex(dict_queries, dict_text, term_to_search = None):
                     p = re.compile(query, re.IGNORECASE)
                     sq = p.search(text)
                     if sq is not None:
+                        list_match.append(sq.group(0))
                         compteur2 += 1
                     else:
                         pass
@@ -101,5 +110,6 @@ def search_regex(dict_queries, dict_text, term_to_search = None):
                 #df01["new_id"] = df01.index
             else:
                 df01[x] = df01.index.map(dict_test_queries)
+            dict_match_queries[query] = list_match
             print(f"{x} : {compteur}")
-        return df01
+        return df01, dict_match_queries
